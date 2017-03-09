@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Suh Chat</title>
+    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
+    <script src="node_modules/jquery/dist/jquery.js"></script>
+    <link rel="stylesheet" href="style.css">
+    <script src="node_modules/bootstrap/dist/js/bootstrap.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="dist/helloworld.js"></script>
+    <script src="node_modules/socket.io-client/dist/socket.io.js"></script>
+</head>
+<body>
+<div class="container">
+    <p hidden id="userName"></p>
+    <div class="row">
+        <div class="col-md-3 chatRooms">
+            <h1>Chat Rooms</h1>
+            <ul>
+                <li>Room 1</li>
+                <li>Room 2</li>
+                <li>Room 3</li>
+                <li>Room 4</li>
+            </ul>
+        </div>
+        <div class="col-md-9">
+            <div class="row"></div>
+            <div class="chatWindow">
+             <ul id="chatMsgs">
+
+             </ul>
+            </div>
+            <div class="row inputters" >
+                <form id="messageForm">
+                    <div class="form-group">
+                <input type="text" placeholder="enter chat msg" id="inputMSg">
+                <input type="submit" value="Send Suh" id="inputBut">
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+<script>
+    $(function () {
+        let socket = io.connect();
+    });
+</script>
+
+
+</body>
+</html>

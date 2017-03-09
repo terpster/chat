@@ -1,0 +1,17 @@
+<component name="libraryTable">
+  <library name="Generated files" type="javaScript">
+    <properties>
+      <sourceFilesUrls>
+        <item url="file://$PROJECT_DIR$/dist/server.js" />
+        <item url="file://$PROJECT_DIR$/dist/Models/schema.server.model.js" />
+        <item url="file://$PROJECT_DIR$/dist/helloworld.js" />
+      </sourceFilesUrls>
+    </properties>
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/dist/server.js" />
+      <root url="file://$PROJECT_DIR$/dist/Models/schema.server.model.js" />
+      <root url="file://$PROJECT_DIR$/dist/helloworld.js" />
+    </CLASSES>
+    <SOURCES />
+  </library>
+</component>
