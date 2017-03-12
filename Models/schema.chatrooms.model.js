@@ -1,5 +1,5 @@
 /**
- * Created by Kasper Terp on 07-03-2017.
+ * Created by Kasper Terp on 12-03-2017.
  */
 const mongoose = require('mongoose');
 const schema = mongoose.Schema;
@@ -11,14 +11,11 @@ db.on('error', console.error.bind(console, 'connection error:'));
 db.once('open', function() {
     console.log("hello im connected");
 });
-let chatSchema = schema({
-    user : String,
-    message : String,
-    room : String,
-    createdOn : {type : Date, default: Date.now}
-
+let chatRoomSchema = schema({
+    room : String
 });
 
-let message = mongoose.model('message', chatSchema);
+let chatRoom = mongoose.model('chatroom', chatRoomSchema);
 
-module.exports = message;
+
+module.exports = chatRoom;

@@ -23,10 +23,5 @@ var chatSchema = schema({
 
 var message = mongoose.model('message', chatSchema);
 
-var newMsg = new message({ user: "terp", message: "suhh", room: "room 1" });
-
-newMsg.save(function (err, newMsg) {
-    if (err) return console.log(err);
-    console.log("im saved fuckeheads");
-});
+module.exports = message;
 //# sourceMappingURL=schema.server.model.js.map

@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <title>Suh Chat</title>
-    <link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css">
-    <script src="node_modules/jquery/dist/jquery.js"></script>
-    <link rel="stylesheet" href="style.css">
-    <script src="node_modules/bootstrap/dist/js/bootstrap.js"></script>
+    <link rel="stylesheet" href="../node_modules/bootstrap/dist/css/bootstrap.css">
+    <script src="../node_modules/jquery/dist/jquery.js"></script>
+    <link rel="stylesheet" href="../style.css">
+    <script src="../node_modules/bootstrap/dist/js/bootstrap.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="dist/helloworld.js"></script>
-    <script src="node_modules/socket.io-client/dist/socket.io.js"></script>
+    <script src="../dist/helloworld.js"></script>
+    <script src="../node_modules/socket.io-client/dist/socket.io.js"></script>
 </head>
 <body>
 <div class="container">
@@ -17,11 +17,10 @@
     <div class="row">
         <div class="col-md-3 chatRooms">
             <h1>Chat Rooms</h1>
-            <ul>
-                <li>Room 1</li>
-                <li>Room 2</li>
-                <li>Room 3</li>
-                <li>Room 4</li>
+            <ul id="rooms">
+                <li><a href="#">Room 1</a></li>
+                <li><a href="#">Room 2</a></li>
+                <li><a href="#">Room 3</a></li>
             </ul>
         </div>
         <div class="col-md-9">
@@ -43,12 +42,5 @@
         </div>
     </div>
 </div>
-<script>
-    $(function () {
-        let socket = io.connect();
-    });
-</script>
-
-
 </body>
 </html>

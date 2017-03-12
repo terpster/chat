@@ -1,47 +1,22 @@
 $(document).ready(function () {
     let user;
+    let chatRooms = $('.chatRooms');
     let currentChatRoom = "Room 1";
-    let chatWindowList = $('#messagesList');
-    const messages = [
-        {
-            user: "terp",
-            message: "suh dude",
-            chatroom: "Room 1"
-        },
-        {
-            user: "Steve",
-            message: "S A U C E",
-            chatroom: "Room 1"
-        }
-    ];
-    const object = {
-        user: "chrion",
-        message: "FUCKIN STEVE",
-        chatroom: "Room 2"
-    };
-    messages.push(
-        object
-    );
-
+    const messages = [];
 
     function getUsername () {
     user = prompt("Type in your username dawd :");
     }
 
     getUsername();
-    // function getRoomMessages() {
-    //     let chatRoomMessages = "";
-    //
-    //     for(let i=0; i<messages.length; i++){
-    //         if(messages[i].chatroom == currentChatRoom){
-    //             chatRoomMessages+="<li>"+messages[i].user+" : "+messages[i].message+"</li>";
-    //         }
-    //     }
-    //     let msgList = chatRoomMessages;
-    //     chatWindow.append(msgList);
+
+    // get msgs
+    // function getMessages() {
+    // io.sockets.emit('get messages', messages);
     // }
 
-    let chatWindow = $('#chatMsgs');
+
+    // let chatWindow = $('#chatMsgs');
     $(function () {
         let socket = io.connect();
         let $messageForm = $('#messageForm');
@@ -57,8 +32,17 @@ $(document).ready(function () {
         });
         socket.on('new message', function (data) {
             $chat.append('<li>'+data.msg+'</li>')
-            
-        })
+
+        });
+
+        socket.on('get messages', function (data) {
+            let html = '';
+            for(let i = 0; i<data.length; i++){
+                console.log(i);
+                html+='<li>'+data[i].message+'</li>'
+            }
+            $chat.html(html);
+        });
     });
 
 
