@@ -15,17 +15,7 @@
 <div class="container">
     <p hidden id="userName"></p>
     <div class="row">
-        <div class="col-md-3 chatRooms">
-            <h1>Chat Rooms</h1>
-            <ul>
-                <li><a href="#" id="createRoom">Create a new chat room</a></li>
-            </ul>
-            <ul id="rooms">
-                <% chatRoom.forEach(function (rooms){ %>
-                <li><a href="#"> <%= rooms.room %> </a></li>
-                <% }); %>
-            </ul>
-        </div>
+        <% include ./partials/rooms %>
         <div class="col-md-9">
             <div class="row"></div>
             <div class="chatWindow">
