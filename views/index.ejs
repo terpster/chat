@@ -16,22 +16,31 @@
     <p hidden id="userName"></p>
     <div class="row">
         <% include ./partials/rooms %>
-        <div class="col-md-9">
-            <div class="row"></div>
+        <div class="col-md-8 chat">
             <div class="chatWindow">
-             <ul id="chatMsgs">
-
-             </ul>
+                <ul id="chatMsgs">
+                </ul>
             </div>
             <div class="row inputters" >
-                <form id="messageForm">
-                    <div class="form-group">
-                <input type="text" placeholder="enter chat msg" id="inputMSg">
-                <input type="submit" value="Send Suh" id="inputBut">
-                    </div>
-                </form>
-
+                <div class="row input-group">
+                    <form id="messageForm" >
+                    <input type="text" placeholder="enter chat msg" id="inputMSg" class="form-control">
+                    <input type="submit" value="Send" id="inputBut" class="btn btn-primary">
+                    </form>
+                </div>
             </div>
+        </div>
+        <div class="col-md-2 users">
+            <h2>Users</h2>
+            <ul>
+                <li>Terps</li>
+                <li>Chrion</li>
+                <li>Steve</li>
+                <li>Brix</li>
+                <li>Rasmau5</li>
+                <li>Emil</li>
+            </ul>
+
         </div>
     </div>
 </div>

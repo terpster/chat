@@ -5,8 +5,7 @@ li{
 .chatRooms{
     text-align: center;
 }
-.col-md-3{
-    border-right: 2px solid black;
+.chatRooms{
     min-height: 100vh;
 }
 body{
@@ -14,18 +13,63 @@ body{
 }
 .container{
     background-color: #ffffff;
+    width: 100%;
 }
 .chatWindow{
-    height: 500px;
-    border: solid 2px black;
-    border-radius: 5px;
+    height: 78.7vh;
     overflow: auto;
-
-
+    margin-left: -15px;
+    margin-right: -15px;
 }
 #inputMSg{
-    width: 80%;
+    font-size: -webkit-xxx-large;
+    width: 85%;
+    height: 21.3vh;
+    margin-bottom: -20px;
+    margin-top: -20px;
 }
 .inputters{
-    margin: auto;;
+    margin: auto;
+}
+
+.chatRooms ul li {
+    margin-left: -40px;
+
+
+}
+.chatRooms{
+    background-color: #3b3b3b;
+    color: white;
+}
+.users h2{
+    text-align: center;
+}
+.users li{
+    text-align: center;
+    margin-left: -40px;
+}
+.users{
+    min-height: 100vh;
+    background-color: #3b3b3b;
+    color: white;
+
+}
+.chat{
+    background-color: #464646;
+    color: white;
+    height:100vh;
+}
+.input-group{
+    display: inline;
+}
+#messageForm{
+    margin-right: -15px;
+    margin-left: -15px;
+}
+#inputBut{
+    width: 15%;
+    margin-top: -20px;
+    margin-bottom: -20px;
+    height: 21.3vh;
+    border-radius: 0px;
 }
