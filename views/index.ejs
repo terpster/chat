@@ -17,10 +17,13 @@
     <div class="row">
         <div class="col-md-3 chatRooms">
             <h1>Chat Rooms</h1>
+            <ul>
+                <li><a href="#" id="createRoom">Create a new chat room</a></li>
+            </ul>
             <ul id="rooms">
-                <li><a href="#">Room 1</a></li>
-                <li><a href="#">Room 2</a></li>
-                <li><a href="#">Room 3</a></li>
+                <% chatRoom.forEach(function (rooms){ %>
+                <li><a href="#"> <%= rooms.room %> </a></li>
+                <% }); %>
             </ul>
         </div>
         <div class="col-md-9">

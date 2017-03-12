@@ -34,7 +34,10 @@ $(document).ready(function () {
         socket.on('new message', function (data) {
             $chat.append('<li>' + data.msg + '</li>');
         });
-
+        $('#createRoom').click(function () {
+            var createRoom = prompt("Give your chatroom a name :");
+            socket.emit('create room', createRoom);
+        });
         socket.on('get messages', function (data) {
             var html = '';
             for (var i = 0; i < data.length; i++) {
@@ -43,18 +46,18 @@ $(document).ready(function () {
             }
             $chat.html(html);
         });
-    });
 
-    $('#inputBut').click(function () {
-        var msg = $('#inputMSg').val();
-        var object = {
-            user: user,
-            message: msg,
-            chatroom: currentChatRoom
-        };
-        messages.push(object);
-        // chatWindow.append("<li>"+object.user + " : " + object.message+"</li>");
-        console.log(messages);
+        $('#inputBut').click(function () {
+            var msg = $('#inputMSg').val();
+            var object = {
+                user: user,
+                message: msg,
+                chatroom: currentChatRoom
+            };
+            messages.push(object);
+            // chatWindow.append("<li>"+object.user + " : " + object.message+"</li>");
+            console.log(messages);
+        });
     });
 });
 //# sourceMappingURL=helloworld.js.map

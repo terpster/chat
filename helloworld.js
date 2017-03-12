@@ -4,8 +4,8 @@ $(document).ready(function () {
     let currentChatRoom = "Room 1";
     const messages = [];
 
-    function getUsername () {
-    user = prompt("Type in your username dawd :");
+    function getUsername() {
+        user = prompt("Type in your username dawd :");
     }
 
     getUsername();
@@ -28,34 +28,36 @@ $(document).ready(function () {
             socket.emit('send message', $message.val());
             $message.val('');
             console.log("submitted");
-            
+
         });
         socket.on('new message', function (data) {
-            $chat.append('<li>'+data.msg+'</li>')
+            $chat.append('<li>' + data.msg + '</li>')
 
         });
-
+        $('#createRoom').click(function () {
+            let createRoom = prompt("Give your chatroom a name :");
+            socket.emit('create room', createRoom)
+        });
         socket.on('get messages', function (data) {
             let html = '';
-            for(let i = 0; i<data.length; i++){
+            for (let i = 0; i < data.length; i++) {
                 console.log(i);
-                html+='<li>'+data[i].message+'</li>'
+                html += '<li>' + data[i].message + '</li>'
             }
             $chat.html(html);
         });
+
+        $('#inputBut').click(function () {
+            let msg = $('#inputMSg').val();
+            let object = {
+                user: user,
+                message: msg,
+                chatroom: currentChatRoom
+            };
+            messages.push(object);
+            // chatWindow.append("<li>"+object.user + " : " + object.message+"</li>");
+            console.log(messages);
+        });
+
     });
-
-
-    $('#inputBut').click(function () {
-        let msg = $('#inputMSg').val();
-        let object = {
-            user: user,
-            message: msg,
-            chatroom: currentChatRoom
-        };
-        messages.push(object);
-        // chatWindow.append("<li>"+object.user + " : " + object.message+"</li>");
-        console.log(messages);
-    })
-
 });

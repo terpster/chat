@@ -56,6 +56,7 @@ var app = express();
 var server = require('http').createServer(app);
 var io = require('socket.io').listen(server);
 var message = require('./dist/Models/schema.server.model');
+var chatRoom = require('./dist/Models/schema.chatrooms.model');
 var currentRoom = 'room 1';
 var users = [];
 var connections = [];
@@ -69,8 +70,13 @@ console.log('Server running...');
 app.set('view engine', 'ejs');
 // Allow static files to be used
 app.use(express.static(__dirname + '/'));
+
 app.get('/', function (req, res) {
-    res.render('index');
+
+    chatRoom.find(function (err, rooms) {
+        if (err) return console.error(err);
+        res.render('index', { chatRoom: rooms });
+    });
 });
 io.sockets.on('connection', function (socket) {
     connections.push(socket);
@@ -98,6 +104,13 @@ io.sockets.on('connection', function (socket) {
             console.log("message is saved");
         });
     });
+    socket.on('create room', function (data) {
+        var newRoom = new chatRoom({ room: data });
+        newRoom.save(function (err, newRoom) {
+            if (err) return console.error(err);
+            console.log("room is saved");
+        });
+    });
 
     // New user
     socket.on('new user', function (data, callback) {
@@ -120,7 +133,6 @@ io.sockets.on('connection', function (socket) {
     //get and emit messages from mongo
     message.find(function (err, messages) {
         if (err) return console.error(err);
-        console.log(messages);
         io.sockets.emit('get messages', messages);
     });
 

@@ -56,6 +56,7 @@ const app = express();
 const server = require('http').createServer(app);
 const io = require('socket.io').listen(server);
 const message = require('./dist/Models/schema.server.model');
+let chatRoom = require('./dist/Models/schema.chatrooms.model');
 let currentRoom = 'room 1';
 const users = [];
 const connections = [];
@@ -69,8 +70,13 @@ console.log('Server running...');
 app.set('view engine', 'ejs');
 // Allow static files to be used
 app.use(express.static(__dirname + '/'));
-app.get('/', function(req, res) {
-    res.render('index');
+
+app.get('/',function (req, res) {
+
+    chatRoom.find(function (err, rooms) {
+        if(err) return console.error(err);
+        res.render('index',{chatRoom: rooms});
+    });
 });
 io.sockets.on('connection', function(socket){
     connections.push(socket);
@@ -99,6 +105,13 @@ io.sockets.on('connection', function(socket){
         });
 
     });
+    socket.on('create room',function(data) {
+        const newRoom = new chatRoom({ room: data});
+        newRoom.save(function (err, newRoom) {
+            if (err) return console.error(err);
+            console.log("room is saved");
+        });
+    });
 
 
     // New user
@@ -120,10 +133,9 @@ io.sockets.on('connection', function(socket){
         io.sockets.emit('get users', users);
     }
     //get and emit messages from mongo
-        message.find(function (err, messages) {
+    message.find(function (err, messages) {
         if(err) return console.error(err);
-            console.log(messages);
-            io.sockets.emit('get messages', messages);
+        io.sockets.emit('get messages', messages);
     });
 
     function selectRandomImage(){
