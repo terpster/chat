@@ -115,6 +115,7 @@ io.sockets.on('connection', function (socket) {
         });
     });
 
+    
     // New user
     socket.on('new user', function (data, callback) {
         callback(true);
@@ -128,7 +129,7 @@ io.sockets.on('connection', function (socket) {
         users.push(object);
         updateUsernames();
     });
-    socket.on('selected')
+
     // Update usernames
     function updateUsernames() {
         io.sockets.emit('get users', users);
