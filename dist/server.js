@@ -72,7 +72,6 @@ app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/'));
 
 app.get('/', function (req, res) {
-
     chatRoom.find(function (err, rooms) {
         if (err) return console.error(err);
         res.render('index', { chatRoom: rooms });
@@ -93,7 +92,7 @@ io.sockets.on('connection', function (socket) {
     //new user
     socket.on('new user', function (data, callback) {
         callback(true);
-        username = socket.username;
+        let username = socket.username;
     });
     // Send message
     socket.on('send message', function (data) {
@@ -129,7 +128,7 @@ io.sockets.on('connection', function (socket) {
         users.push(object);
         updateUsernames();
     });
-
+    socket.on('selected')
     // Update usernames
     function updateUsernames() {
         io.sockets.emit('get users', users);

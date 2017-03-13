@@ -1,7 +1,7 @@
 $(document).ready(function () {
     let $user;
     let chatRooms = $('.chatRooms');
-
+    let socket = io.connect();
     function getUsername() {
         $user = prompt("Type in your username dawd :");
         console.log($user);
@@ -9,7 +9,7 @@ $(document).ready(function () {
     getUsername();
     // let chatWindow = $('#chatMsgs');
     $(function () {
-        let socket = io.connect();
+
         let $messageForm = $('#messageForm');
         let $message = $('#inputMSg');
         let $chat = $('#chatMsgs');
@@ -41,25 +41,26 @@ $(document).ready(function () {
             let createRoom = prompt("Give your chatroom a name :");
             socket.emit('create room', createRoom)
         });
+        $('#rooms').on('click', 'li>',  function () {
+            let selectedRoom = $(this).text();
+            console.log(selectedRoom);
+                socket.emit('selected room', selectedRoom);
+        });
 
         //append the latest room to html (add room to end of list)
         socket.on('new room', function (data) {
-            $rooms.append('<li id="selectRoom"><a href="#" >' + data.room + '</a></li>')
+            $rooms.append('<li class="selectRoom"><a href="#" >' + data.room + '</a></li>')
             
         });
         //get rooms from db and show them in the list
         socket.on('get rooms', function (data) {
             let html = '';
             for(let i= 0; i<data.length; i++){
-                console.log("rooms : ", i.room);
-                html+='<li id="selectRoom"><a href="#" >' + data[i].room + '</a></li>'
+                console.log("rooms : ", data[i].room);
+                html+='<li class="selectRoom"><a href="#" >' + data[i].room + '</a></li>'
             }
             $rooms.html(html);
         });
-        $('#selectRoom').click(function () {
-            
-            
-        })
 
     });
 });
