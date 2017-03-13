@@ -8,6 +8,11 @@ li{
 .chatRooms{
     min-height: 100vh;
 }
+.chatRooms h2{
+    border-bottom: 1px solid #4c4c4c;
+    margin-left: -15px;
+    margin-right: -15px;
+}
 body{
     background-color: #b6b6b6;
 }
@@ -24,7 +29,7 @@ body{
 #inputMSg{
     font-size: -webkit-xxx-large;
     width: 85%;
-    height: 21.3vh;
+    height: 12.3vh;
     margin-bottom: -20px;
     margin-top: -20px;
 }
@@ -34,8 +39,7 @@ body{
 
 .chatRooms ul li {
     margin-left: -40px;
-
-
+    text-align: left;
 }
 .chatRooms{
     background-color: #3b3b3b;
@@ -43,6 +47,9 @@ body{
 }
 .users h2{
     text-align: center;
+    border-bottom: 1px solid #4c4c4c;
+    margin-left: -15px;
+    margin-right: -15px;
 }
 .users li{
     text-align: center;
@@ -70,6 +77,21 @@ body{
     width: 15%;
     margin-top: -20px;
     margin-bottom: -20px;
-    height: 21.3vh;
+    height: 12.3vh;
     border-radius: 0px;
+    /*background: black;*/
+    border: 0;
+}
+
+#inputMSg {
+    background-color: #232323;
+    color: white;
+    border: 0;
+    border-radius: 0;
+}
+#navbar{
+    width:100%;
+    height: 50px;
+    background: black;
+    color: white;
 }

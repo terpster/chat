@@ -78,6 +78,7 @@ app.get('/',function (req, res) {
         res.render('index',{chatRoom: rooms});
     });
 });
+
 io.sockets.on('connection', function(socket){
     connections.push(socket);
     console.log('Connected: %s sockets connected', connections.length);
@@ -89,14 +90,16 @@ io.sockets.on('connection', function(socket){
         connections.splice(connections.indexOf(socket), 1);
         console.log('Disconnected: %s sockets connected', connections.length);
     });
-
+//new user
+    socket.on('new user', function (data, callback) {
+        callback(true);
+        username = socket.username;
+    });
     // Send message
     socket.on('send message', function(data){
-        io.in(currentRoom).emit('new message', {msg: data, user: socket.username, image: userImage});
-        // io.sockets.emit('new message', {msg: data, user: socket.username, image: userImage});
-
-        // Create new message
-        let newMsg = new message ({ user: socket.username, message: data, room: currentRoom });
+        io.in(currentRoom).emit('new message', {message: data.message, user: data.user, image: userImage});
+                // Create new message
+        let newMsg = new message ({ user: data.user, message: data.message, room: currentRoom });
 
         // Insert to db
         newMsg.save(function (err, newMsg) {
@@ -106,6 +109,7 @@ io.sockets.on('connection', function(socket){
 
     });
     socket.on('create room',function(data) {
+        io.emit('new room',{room: data});
         const newRoom = new chatRoom({ room: data});
         newRoom.save(function (err, newRoom) {
             if (err) return console.error(err);
@@ -137,16 +141,17 @@ io.sockets.on('connection', function(socket){
         if(err) return console.error(err);
         io.sockets.emit('get messages', messages);
     });
+    //get and emit chatrooms from mongo
+    chatRoom.find(function (err, rooms) {
+        if(err) return console.error(err);
+        io.sockets.emit('get rooms', rooms);
+    });
+
 
     function selectRandomImage(){
         return images[Math.floor(Math.random()*images.length)];
     }
     let userImage = selectRandomImage(); // Select random image for the new user
-
-    // function messageTimestamp(){
-    //     return moment().calendar();
-    //     // Today at 9:07 PM
-    // }
 
 });
 

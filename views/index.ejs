@@ -12,10 +12,18 @@
     <script src="../node_modules/socket.io-client/dist/socket.io.js"></script>
 </head>
 <body>
+<div id="navbar"><p>hej</p></div>
 <div class="container">
     <p hidden id="userName"></p>
     <div class="row">
-        <% include ./partials/rooms %>
+        <div class="col-md-2 chatRooms">
+            <h2>Chat Rooms</h2>
+            <ul>
+                <li><a href="#" id="createRoom">Create a new chat room</a></li>
+            </ul>
+            <ul id="rooms">
+            </ul>
+        </div>
         <div class="col-md-8 chat">
             <div class="chatWindow">
                 <ul id="chatMsgs">
