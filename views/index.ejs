@@ -7,24 +7,23 @@
     <script src="../node_modules/jquery/dist/jquery.js"></script>
     <link rel="stylesheet" href="../style.css">
     <script src="../node_modules/bootstrap/dist/js/bootstrap.js"></script>
+    <script src="../node_modules/moment/min/moment.min.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <script src="../dist/app.js"></script>
     <script src="../node_modules/socket.io-client/dist/socket.io.js"></script>
 </head>
 <body>
-<div id="navbar"><p>hej</p></div>
 <div class="container">
-    <p hidden id="userName"></p>
     <div class="row">
         <div class="col-md-2 chatRooms">
-            <h2>Chat Rooms</h2>
-            <ul>
-                <li><a href="#" id="createRoom">Create a new chat room</a></li>
-            </ul>
+            <h2>Chat Rooms <a href="#" id="createRoom">+</a></h2>
             <ul id="rooms">
             </ul>
         </div>
         <div class="col-md-8 chat">
+            <div id="chatHeader">
+                <h2>Hello world</h2>
+            </div>
             <div class="chatWindow">
                 <ul id="chatMsgs">
                 </ul>
@@ -39,7 +38,7 @@
             </div>
         </div>
         <div class="col-md-2 userList">
-            <h2>Users</h2>
+            <h2>Active Users</h2>
             <ul id="users">
             </ul>
 

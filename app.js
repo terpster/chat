@@ -1,55 +1,57 @@
+
 $(document).ready(function () {
     let $user;
-    let chatRooms = $('.chatRooms');
     let socket = io.connect();
     function getUsername() {
-        $user = prompt("Type in your username dawd :");
-        console.log($user);
+        $user = prompt("Type in your username:");
+        socket.emit('new user', $user);
     }
     getUsername();
     // let chatWindow = $('#chatMsgs');
     $(function () {
-
         let $messageForm = $('#messageForm');
         let $message = $('#inputMSg');
         let $chat = $('#chatMsgs');
         let $rooms = $('#rooms');
         let $users = $('#users');
+        // let $date = moment();
+        // let $formattedDate = moment($date).format('DD-MM-YYYY H:MM');
 
         $messageForm.submit(function (e) {
+            let $date = moment();
+            console.log($date);
+            let $formattedDate = moment($date).format('H:mm - DD-MM-YYYY');
             e.preventDefault();
-            socket.emit('send message', { message: $message.val(), user: $user} );
+            socket.emit('send message', { message: $message.val(), user: $user, created: $formattedDate} );
             $message.val('');
             console.log("submitted");
-            console.log($user)
-
         });
+
         socket.on('new message', function (data) {
-            $chat.append('<li>'  + data.user + ": "+ data.message + '</li>')
+            $chat.append('<li>'  + '<strong style="color: #207f3c">'+data.user +'</strong>'+ " : "+ data.message+" " +'<div style="display:inline; color: rgba(255,255,255,0.20); font-size: x-small;">'+ data.created +'</div>'+'</li>')
         });
         socket.on('get messages', function (data) {
             let html = '';
             for (let i = 0; i < data.length; i++) {
-                html += '<li>' + data[i].user + ": " +data[i].message + '</li>'
+                html += '<li>' + '<strong style="color: #207f3c">'+data[i].user + '</strong>'+" : " +data[i].message+" "+'<div style="display:inline; color: rgba(255,255,255,0.20); font-size: x-small;">'+ moment(data[i].createdOn).format('H:mm - DD-MM-YYYY')+'</div>'+'</li>'
             }
             $chat.html(html);
         });
         socket.on('get users', function (data) {
-            console.log("users: ", data);
+            console.log(data);
             let html = '';
-            for(let i =0; i<data.lenth; i++){
-                html+='<li>'+data.user +'</li>'
+            for(let i =0; i<data.length; i++){
+                html+='<li>'+data[i] +'</li>'
             }
             $users.html(html);
-            console.log(data.user);
         });
-
         //Rooms
         //create room and emit
         $('#createRoom').click(function () {
             let createRoom = prompt("Give your chatroom a name :");
             socket.emit('create room', createRoom)
         });
+
         $('#rooms').on('click', 'li>',  function () {
             let selectedRoom = $(this).text();
             console.log(selectedRoom);
@@ -65,7 +67,6 @@ $(document).ready(function () {
         socket.on('get rooms', function (data) {
             let html = '';
             for(let i= 0; i<data.length; i++){
-                console.log("rooms : ", data[i].room);
                 html+='<li class="selectRoom"><a href="#" >' + data[i].room + '</a></li>'
             }
             $rooms.html(html);
