@@ -14,12 +14,14 @@ $(document).ready(function () {
         let $message = $('#inputMSg');
         let $chat = $('#chatMsgs');
         let $rooms = $('#rooms');
+        let $users = $('#users');
 
         $messageForm.submit(function (e) {
             e.preventDefault();
             socket.emit('send message', { message: $message.val(), user: $user} );
             $message.val('');
             console.log("submitted");
+            console.log($user)
 
         });
         socket.on('new message', function (data) {
@@ -28,12 +30,19 @@ $(document).ready(function () {
         socket.on('get messages', function (data) {
             let html = '';
             for (let i = 0; i < data.length; i++) {
-                console.log(i);
                 html += '<li>' + data[i].user + ": " +data[i].message + '</li>'
             }
             $chat.html(html);
         });
-
+        socket.on('get users', function (data) {
+            console.log("users: ", data);
+            let html = '';
+            for(let i =0; i<data.lenth; i++){
+                html+='<li>'+data.user +'</li>'
+            }
+            $users.html(html);
+            console.log(data.user);
+        });
 
         //Rooms
         //create room and emit
@@ -61,6 +70,5 @@ $(document).ready(function () {
             }
             $rooms.html(html);
         });
-
     });
 });

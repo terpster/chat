@@ -49,19 +49,14 @@
 //     });
 // });
 
-
-// const moment = require('moment'); //timestamps
 var express = require('express');
 var app = express();
 var server = require('http').createServer(app);
 var io = require('socket.io').listen(server);
 var message = require('./dist/Models/schema.server.model');
 var chatRoom = require('./dist/Models/schema.chatrooms.model');
-var currentRoom = 'room 1';
 var users = [];
 var connections = [];
-var images = ["yuna", "kim", "james", "kasper", "jane", "mike", "lin", "karl", "julia", "jones", "helen", "chris"];
-
 var messages = [];
 
 server.listen(3000);
@@ -72,6 +67,7 @@ app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/'));
 
 app.get('/', function (req, res) {
+
     chatRoom.find(function (err, rooms) {
         if (err) return console.error(err);
         res.render('index', { chatRoom: rooms });
@@ -79,9 +75,11 @@ app.get('/', function (req, res) {
 });
 
 io.sockets.on('connection', function (socket) {
+    var currentRoom = 'room 1';
     connections.push(socket);
     console.log('Connected: %s sockets connected', connections.length);
     socket.join(currentRoom);
+
     // Disconnect
     socket.on('disconnect', function (data) {
         users.splice(users.indexOf(socket.username), 1);
@@ -89,14 +87,20 @@ io.sockets.on('connection', function (socket) {
         connections.splice(connections.indexOf(socket), 1);
         console.log('Disconnected: %s sockets connected', connections.length);
     });
+    //Getting messages for current default room, before the socket
+    message.find({ room: currentRoom }, function (err, messages) {
+        if (err) return console.error(err);
+        io.sockets.emit('get messages', messages);
+    });
+
     //new user
     socket.on('new user', function (data, callback) {
         callback(true);
-        let username = socket.username;
+        username = socket.username;
     });
     // Send message
     socket.on('send message', function (data) {
-        io.in(currentRoom).emit('new message', { message: data.message, user: data.user, image: userImage });
+        io.in(currentRoom).emit('new message', { message: data.message, user: data.user });
         // Create new message
         var newMsg = new message({ user: data.user, message: data.message, room: currentRoom });
 
@@ -114,13 +118,21 @@ io.sockets.on('connection', function (socket) {
             console.log("room is saved");
         });
     });
+    socket.on('selected room', function (data) {
+        currentRoom = data;
+        socket.join(currentRoom);
 
-    
+        message.find({ room: data }, function (err, messages) {
+            if (err) return console.error(err);
+            console.log(messages);
+            io.sockets.emit('get messages', messages);
+        });
+    });
+
     // New user
     socket.on('new user', function (data, callback) {
         callback(true);
         socket.username = data;
-
         var object = {
             username: socket.username,
             image: userImage
@@ -132,22 +144,16 @@ io.sockets.on('connection', function (socket) {
 
     // Update usernames
     function updateUsernames() {
-        io.sockets.emit('get users', users);
+        socket.on('send users', function () {
+            io.sockets.emit('get users', users);
+        });
     }
     //get and emit messages from mongo
-    message.find(function (err, messages) {
-        if (err) return console.error(err);
-        io.sockets.emit('get messages', messages);
-    });
+
     //get and emit chatrooms from mongo
     chatRoom.find(function (err, rooms) {
         if (err) return console.error(err);
         io.sockets.emit('get rooms', rooms);
     });
-
-    function selectRandomImage() {
-        return images[Math.floor(Math.random() * images.length)];
-    }
-    var userImage = selectRandomImage(); // Select random image for the new user
 });
 //# sourceMappingURL=server.js.map

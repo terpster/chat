@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="../style.css">
     <script src="../node_modules/bootstrap/dist/js/bootstrap.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="../dist/helloworld.js"></script>
+    <script src="../dist/app.js"></script>
     <script src="../node_modules/socket.io-client/dist/socket.io.js"></script>
 </head>
 <body>
@@ -22,7 +22,6 @@
                 <li><a href="#" id="createRoom">Create a new chat room</a></li>
             </ul>
             <ul id="rooms">
-                <li class="selectRoom"><a href="#">room 12</a></li>
             </ul>
         </div>
         <div class="col-md-8 chat">
@@ -39,15 +38,9 @@
                 </div>
             </div>
         </div>
-        <div class="col-md-2 users">
+        <div class="col-md-2 userList">
             <h2>Users</h2>
-            <ul>
-                <li>Terps</li>
-                <li>Chrion</li>
-                <li>Steve</li>
-                <li>Brix</li>
-                <li>Rasmau5</li>
-                <li>Emil</li>
+            <ul id="users">
             </ul>
 
         </div>

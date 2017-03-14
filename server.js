@@ -47,21 +47,14 @@
 //     });
 // });
 
-
-
-
-// const moment = require('moment'); //timestamps
 const express = require('express');
 const app = express();
 const server = require('http').createServer(app);
 const io = require('socket.io').listen(server);
 const message = require('./dist/Models/schema.server.model');
 let chatRoom = require('./dist/Models/schema.chatrooms.model');
-let currentRoom = 'room 1';
 const users = [];
 const connections = [];
-const images = ["yuna", "kim", "james", "kasper", "jane", "mike", "lin", "karl", "julia", "jones", "helen", "chris"];
-
 let messages= [];
 
 server.listen(3000);
@@ -80,9 +73,11 @@ app.get('/',function (req, res) {
 });
 
 io.sockets.on('connection', function(socket){
+    let currentRoom = 'room 1';
     connections.push(socket);
     console.log('Connected: %s sockets connected', connections.length);
     socket.join(currentRoom);
+
     // Disconnect
     socket.on('disconnect', function(data){
         users.splice(users.indexOf(socket.username), 1);
@@ -90,15 +85,21 @@ io.sockets.on('connection', function(socket){
         connections.splice(connections.indexOf(socket), 1);
         console.log('Disconnected: %s sockets connected', connections.length);
     });
-//new user
+    //Getting messages for current default room, before the socket
+    message.find({room: currentRoom},function (err, messages) {
+        if(err) return console.error(err);
+        io.sockets.emit('get messages', messages);
+    });
+
+    //new user
     socket.on('new user', function (data, callback) {
         callback(true);
         username = socket.username;
     });
     // Send message
     socket.on('send message', function(data){
-        io.in(currentRoom).emit('new message', {message: data.message, user: data.user, image: userImage});
-                // Create new message
+        io.in(currentRoom).emit('new message', {message: data.message, user: data.user});
+        // Create new message
         let newMsg = new message ({ user: data.user, message: data.message, room: currentRoom });
 
         // Insert to db
@@ -116,13 +117,21 @@ io.sockets.on('connection', function(socket){
             console.log("room is saved");
         });
     });
+    socket.on('selected room', function (data) {
+        currentRoom = data;
+        socket.join(currentRoom);
 
+        message.find({room: data},function (err, messages) {
+            if(err) return console.error(err);
+            console.log(messages);
+            io.sockets.emit('get messages', messages);
+        });
+    });
 
     // New user
     socket.on('new user', function(data, callback){
         callback(true);
         socket.username = data;
-
         const object = {
             username: socket.username,
             image: userImage
@@ -134,24 +143,18 @@ io.sockets.on('connection', function(socket){
 
     // Update usernames
     function updateUsernames(){
-        io.sockets.emit('get users', users);
+        socket.on('send users', function () {
+            io.sockets.emit('get users', users);
+        })
+
     }
     //get and emit messages from mongo
-    message.find(function (err, messages) {
-        if(err) return console.error(err);
-        io.sockets.emit('get messages', messages);
-    });
+
     //get and emit chatrooms from mongo
     chatRoom.find(function (err, rooms) {
         if(err) return console.error(err);
         io.sockets.emit('get rooms', rooms);
     });
-
-
-    function selectRandomImage(){
-        return images[Math.floor(Math.random()*images.length)];
-    }
-    let userImage = selectRandomImage(); // Select random image for the new user
 
 });
 

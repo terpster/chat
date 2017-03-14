@@ -29,7 +29,6 @@ $(document).ready(function () {
         socket.on('get messages', function (data) {
             var html = '';
             for (var i = 0; i < data.length; i++) {
-                console.log(i);
                 html += '<li>' + data[i].user + ": " + data[i].message + '</li>';
             }
             $chat.html(html);
