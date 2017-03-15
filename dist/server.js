@@ -29,7 +29,7 @@ io.sockets.on('connection', function (socket) {
     var currentRoom = 'room 1';
     console.log('Connected: %s sockets connected', connections.length);
     socket.join(currentRoom);
-
+    socket.emit('selectedRoom', currentRoom);
     // Disconnect
     socket.on('disconnect', function (data) {
         users.splice(users.indexOf(socket.username), 1);
@@ -75,6 +75,7 @@ io.sockets.on('connection', function (socket) {
         socket.leave(currentRoom);
         currentRoom = data;
         socket.join(data);
+        socket.emit('selectedRoom', data);
         message.find({ room: data }, function (err, messages) {
             if (err) return console.error(err);
             socket.emit('get messages', messages);
