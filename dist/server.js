@@ -14,23 +14,22 @@ var users = [];
 var connections = [];
 
 server.listen(3000);
+console.log('Server is running');
 
-console.log('Server running...');
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/'));
-
 app.get('/', function (req, res) {
     res.render('index');
 });
 
-//connect
+//Connect
 io.sockets.on('connection', function (socket) {
     connections.push(socket);
     var currentRoom = 'room 1';
     console.log('Connected: %s sockets connected', connections.length);
     socket.join(currentRoom);
     socket.emit('selectedRoom', currentRoom);
-    // Disconnect
+    //Disconnect
     socket.on('disconnect', function (data) {
         users.splice(users.indexOf(socket.username), 1);
         updateUsernames();
@@ -43,26 +42,26 @@ io.sockets.on('connection', function (socket) {
         if (err) return console.error(err);
         io.sockets.emit('get messages', messages);
     });
-
+    //Get the username from frontend, push it to the users array, and updateUsernames accordinly
     socket.on('new user', function (data) {
         socket.username = data;
-        console.log(socket.username);
         users.push(socket.username);
         io.sockets.emit('usernames', users);
         updateUsernames();
     });
-    // Send message
+    //Recieve the text/message and send the message to the currently selected room
     socket.on('send message', function (data) {
         io.in(currentRoom).emit('new message', { message: data.message, user: data.user, created: data.created });
-        // Create new message
+        // Create new message object
         var newMsg = new message({ user: data.user, message: data.message, room: currentRoom });
 
-        // Insert to db
+        //Insert the message object into the DB using the schema
         newMsg.save(function (err, newMsg) {
             if (err) return console.error(err);
-            console.log("message is saved");
+            console.log("the message is saved!");
         });
     });
+    //When a new room is created, the room is saved into the DB using the schema
     socket.on('create room', function (data) {
         socket.emit('new room', { room: data });
         var newRoom = new chatRoom({ room: data });
@@ -71,6 +70,7 @@ io.sockets.on('connection', function (socket) {
             console.log("room is saved :", newRoom);
         });
     });
+    //When a room is selected that room is then assigned as the currentRoom, and the socket is joined on that
     socket.on('selected room', function (data) {
         socket.leave(currentRoom);
         currentRoom = data;
@@ -87,7 +87,7 @@ io.sockets.on('connection', function (socket) {
         io.sockets.emit('get rooms', rooms);
     });
 
-    // Update usernames
+    //Update usernames, emits the users array
     function updateUsernames() {
         io.sockets.emit('get users', users);
     }
