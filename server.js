@@ -7,25 +7,24 @@ const server = require('http').createServer(app);
 const moment = require('moment');
 const io = require('socket.io').listen(server);
 const message = require('./dist/Models/schema.server.model');
-let chatRoom = require('./dist/Models/schema.chatrooms.model');
+const chatRoom = require('./dist/Models/schema.chatrooms.model');
 const users = [];
 const connections = [];
+
 server.listen(3000);
+
 console.log('Server running...');
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/'));
 
 app.get('/',function (req, res) {
-
-    chatRoom.find(function (err, rooms) {
-        if(err) return console.error(err);
-        res.render('index',{chatRoom: rooms});
+        res.render('index');
     });
-});
+
     //connect
 io.sockets.on('connection', function(socket){
-    let currentRoom = 'room 1';
     connections.push(socket);
+    let currentRoom = 'room 1';
     console.log('Connected: %s sockets connected', connections.length);
     socket.join(currentRoom);
 
@@ -64,34 +63,34 @@ io.sockets.on('connection', function(socket){
 
     });
     socket.on('create room',function(data) {
-        io.emit('new room',{room: data});
+        socket.emit('new room',{room: data});
         const newRoom = new chatRoom({ room: data});
         newRoom.save(function (err, newRoom) {
             if (err) return console.error(err);
-            console.log("room is saved");
+            console.log("room is saved :", newRoom);
         });
     });
     socket.on('selected room', function (data) {
+        socket.leave(currentRoom);
         currentRoom = data;
-        socket.join(currentRoom);
-
+        socket.join(data);
         message.find({room: data},function (err, messages) {
             if(err) return console.error(err);
-            io.sockets.emit('get messages', messages);
+            socket.emit('get messages', messages);
         });
     });
-
+    //get and emit chatrooms from mongo
+    chatRoom.find(function (err, rooms) {
+        if(err) return console.error(err);
+        io.sockets.emit('get rooms', rooms);
+    });
 
     // Update usernames
     function updateUsernames(){
             io.sockets.emit('get users', users);
     }
 
-    //get and emit chatrooms from mongo
-    chatRoom.find(function (err, rooms) {
-        if(err) return console.error(err);
-        io.sockets.emit('get rooms', rooms);
-    });
+
 
 });
 

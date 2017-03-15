@@ -14,8 +14,6 @@ $(document).ready(function () {
         let $chat = $('#chatMsgs');
         let $rooms = $('#rooms');
         let $users = $('#users');
-        // let $date = moment();
-        // let $formattedDate = moment($date).format('DD-MM-YYYY H:MM');
 
         $messageForm.submit(function (e) {
             let $date = moment();
@@ -65,6 +63,7 @@ $(document).ready(function () {
         });
         //get rooms from db and show them in the list
         socket.on('get rooms', function (data) {
+            console.log(data);
             let html = '';
             for(let i= 0; i<data.length; i++){
                 html+='<li class="selectRoom"><a href="#" >' + data[i].room + '</a></li>'
