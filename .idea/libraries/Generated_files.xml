@@ -2,23 +2,13 @@
   <library name="Generated files" type="javaScript">
     <properties>
       <sourceFilesUrls>
-        <item url="file://$PROJECT_DIR$/dist/dist/helloworld.js" />
-        <item url="file://$PROJECT_DIR$/dist/app.js" />
-        <item url="file://$PROJECT_DIR$/dist/helloworld.js" />
-        <item url="file://$PROJECT_DIR$/dist/Models/schema.chatrooms.model.js" />
         <item url="file://$PROJECT_DIR$/dist/server.js" />
-        <item url="file://$PROJECT_DIR$/dist/Models/schema.server.model.js" />
+        <item url="file://$PROJECT_DIR$/dist/app.js" />
       </sourceFilesUrls>
     </properties>
     <CLASSES>
-      <root url="file://$PROJECT_DIR$/dist/dist/server.js" />
-      <root url="file://$PROJECT_DIR$/dist/dist/Models/schema.server.model.js" />
-      <root url="file://$PROJECT_DIR$/dist/dist/helloworld.js" />
-      <root url="file://$PROJECT_DIR$/dist/app.js" />
-      <root url="file://$PROJECT_DIR$/dist/helloworld.js" />
-      <root url="file://$PROJECT_DIR$/dist/Models/schema.chatrooms.model.js" />
       <root url="file://$PROJECT_DIR$/dist/server.js" />
-      <root url="file://$PROJECT_DIR$/dist/Models/schema.server.model.js" />
+      <root url="file://$PROJECT_DIR$/dist/app.js" />
     </CLASSES>
     <SOURCES />
   </library>

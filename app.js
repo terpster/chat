@@ -56,6 +56,7 @@ $(document).ready(function () {
             }
             $users.html(html);
         });
+
         //Rooms
         //create room and emit
         $('#createRoom').click(function () {

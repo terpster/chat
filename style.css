@@ -17,6 +17,11 @@ li{
     margin-left: -15px;
     margin-right: -15px;
 }
+#rooms{
+    overflow: auto;
+    height: 80vh;
+}
+
 body{
     background-color: #b6b6b6;
 }
@@ -67,12 +72,12 @@ body{
     margin-right: -15px;
     margin-left: -15px;
     border-top: 1px solid #4c4c4c;
+    margin-bottom: 40px;
 }
 
 #inputMSg {
     background-color: #424549;
     color: white;
-    border: 0;
     border-radius: 2px;
     padding: 30px;
     margin-top: 15px;
