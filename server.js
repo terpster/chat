@@ -1,8 +1,10 @@
 /**
  * Created by Kasper Terp on 21-02-2017.
  */
+//Constant variables
 const express = require('express');
 const app = express();
+//Create the server
 const server = require('http').createServer(app);
 const moment = require('moment');
 const io = require('socket.io').listen(server);
@@ -10,18 +12,18 @@ const message = require('./dist/Models/schema.server.model');
 const chatRoom = require('./dist/Models/schema.chatrooms.model');
 const users = [];
 const connections = [];
-
+//Listen for the server on a specific port
 server.listen(3000);
 console.log('Server is running');
 
-
+//ExpressJS set the view engine
 app.set('view engine', 'ejs');
 app.use(express.static(__dirname + '/'));
 app.get('/',function (req, res) {
     res.render('index');
 });
 
-    //Connect
+//Connect
 io.sockets.on('connection', function(socket){
     connections.push(socket);
     let currentRoom = 'room 1';
@@ -57,7 +59,7 @@ io.sockets.on('connection', function(socket){
         //Insert the message object into the DB using the schema
         newMsg.save(function (err, newMsg) {
             if (err) return console.error(err);
-            console.log("the message is saved!");
+            console.log(newMsg +" the message is saved!");
         });
 
     });
